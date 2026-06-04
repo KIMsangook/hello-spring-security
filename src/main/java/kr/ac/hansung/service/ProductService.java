@@ -4,6 +4,10 @@ import kr.ac.hansung.dto.ProductDto;
 import kr.ac.hansung.entity.Product;
 import kr.ac.hansung.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,4 +43,15 @@ public class ProductService {
     public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
+
+    @Transactional
+    public Page<Product> getProducts(Pageable pageable){
+        return  productRepository.findAll(pageable);
+    }
+
+    @Transactional
+    public Page<Product> searchProducts(String Keyword, Pageable pageable){
+        return  productRepository.findByNameContaining(Keyword, pageable);
+    }
+
 }
